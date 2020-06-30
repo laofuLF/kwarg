@@ -1,86 +1,37 @@
-import React, { Component, Fragment } from 'react';
-import './style.css'
-import TodoItem from "./TodoItem";
+import React, { Component } from "react";
+import { Input, Button, Divider, Typography, List } from 'antd';
+import 'antd/dist/antd.css';
+
+const data = [
+    'Racing car sprays burning fuel into crowd.',
+    'Japanese princess to wed commoner.',
+    'Australian walks 100km after outback crash.',
+    'Man charged over missing wedding girl.',
+    'Los Angeles battles huge wildfires.',
+];
 
 class Todolist extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            inputValue: '',
-            list: ['study english', 'study chinese']
-        }
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleButtonClick = this.handleButtonClick.bind(this);
-        this.handleItemDelete = this.handleItemDelete.bind(this);
-    }
 
     render() {
         return (
-            <Fragment>
+            <div>
                 <div>
-                    todo list
+                    <Input placeholder='add task' style={{width:400, marginRight:25}}/>
+                    <Button type='default'>add</Button>
                 </div>
-                <div>
-                    <label
-                        htmlFor='insertArea'
-                    >
-                        input your todo list
-                    </label>
-                    <input
-                        id='insertArea'
-                        className='input'
-                        value={this.state.inputValue}
-                        onChange={this.handleInputChange}
-                    />
-                    <button
-                        onClick={this.handleButtonClick}
-                    >add</button>
-                </div>
-                <ul>
-                    {this.getItem()}
-                </ul>
-            </Fragment>
-        );
-    }
-
-    getItem() {
-        return (
-            this.state.list.map((item, index) => {
-                return (
-                    <TodoItem
-                        key={index}
-                        content={item}
-                        index={index}
-                        handleItemDelete={this.handleItemDelete}
-                    />
-                )
-            })
+                <Divider orientation="left">Default Size</Divider>
+                <List
+                    style={{marginTop:10, width:400}}
+                    bordered
+                    dataSource={data}
+                    renderItem={item => (
+                        <List.Item>
+                            <Typography.Text mark/> {item}
+                        </List.Item>
+                    )}
+                />
+            </div>
         )
-    }
-
-    handleInputChange(e) {
-        console.log(this);
-        const value = e.target.value;
-        this.setState(() => ({
-            inputValue: value
-        }))
-    }
-
-    handleButtonClick(e) {
-        console.log(e.target.value);
-        this.setState((prevState) => ({
-            list: [...prevState.list, prevState.inputValue],
-            inputValue: ''
-        }));
-    }
-
-    handleItemDelete(index) {
-        this.setState((prevState) => {
-            const list = [...prevState.list];
-            list.splice(index, 1);
-            return {list};
-        })
-        console.log(index);
     }
 }
 
