@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Input, Button, Divider, Typography, List } from 'antd';
+import TodolistUI from './TodolistUI'
 import store from "./store/index";
 import 'antd/dist/antd.css';
+import {getAddItemAction, getDeleteItemAction, getInputChangeAction} from "./store/actionCreator";
 
 const data = [
     'Racing car sprays burning fuel into crowd.',
@@ -18,44 +19,26 @@ class Todolist extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleStoreChange = this.handleStoreChange.bind(this);
         this.handleButtonClick = this.handleButtonClick.bind(this);
-        // this.handleItemClick = this.handleItemClick.bind(this);
+        this.handleItemClick = this.handleItemClick.bind(this);
         store.subscribe(this.handleStoreChange);
         console.log(this.state);
     }
 
     render() {
         return (
-            <div>
-                <div>
-                    <Input
-                        placeholder='add task'
-                        value={this.state.inputValue}
-                        style={{width:400, marginRight:25}}
-                        onChange={this.handleInputChange}
-                    />
-                    <Button type='default' onClick={this.handleButtonClick}>add</Button>
-                </div>
-                <Divider orientation="left">Default Size</Divider>
-                <List
-                    style={{marginTop:10, width:400}}
-                    dataSource={this.state.list}
-                    renderItem={(item, index) => (
-                        <List.Item
-                            onClick={this.handleItemClick.bind(this, index)}
-                        >
-                            <Typography.Text mark/> {item}
-                        </List.Item>
-                    )}
-                />
-            </div>
+            <TodolistUI
+                inputValue = {this.state.inputValue}
+                list = {this.state.list}
+                handleInputChange = {this.handleInputChange}
+                handleButtonClick = {this.handleButtonClick}
+                handleItemClick = {this.handleItemClick}
+            />
         )
     }
 
+
     handleInputChange(e) {
-        const action = {
-            type: 'change_input_value',
-            value: e.target.value
-        }
+        const action = getInputChangeAction(e.target.value);
         store.dispatch(action);
     }
 
@@ -64,17 +47,12 @@ class Todolist extends Component {
     }
 
     handleButtonClick() {
-        const action = {
-            type: 'add_item',
-        }
+        const action = getAddItemAction();
         store.dispatch(action);
     }
 
     handleItemClick(index) {
-        const action = {
-            type: 'delete_item',
-            value: index
-        }
+        const action = getDeleteItemAction(index);
         store.dispatch(action);
     }
 }

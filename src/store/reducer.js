@@ -1,3 +1,5 @@
+import { CHANGE_INPUT_VALUE, ADD_ITEM, DELETE_ITEM } from "./actionTypes";
+
 const defaultState = {
     inputValue: "",
     list: [1,2]
@@ -5,20 +7,20 @@ const defaultState = {
 
 // store all date
 export default (state = defaultState, action) => {
-    if (action.type === 'change_input_value') {
+    if (action.type === CHANGE_INPUT_VALUE) {
         const newState = JSON.parse(JSON.stringify(state));
         newState.inputValue = action.value;
         return newState;
     }
-    if (action.type === 'add_item') {
+    if (action.type === ADD_ITEM && state.inputValue !== "") {
         const newState = JSON.parse(JSON.stringify(state));
         newState.list.push(newState.inputValue);
         newState.inputValue = '';
         return newState;
     }
-    if (action.type === 'delete_item') {
+    if (action.type === DELETE_ITEM) {
         const newState = JSON.parse(JSON.stringify(state));
-        newState.list.splice(action.value, 1);
+        newState.list.splice(action.index, 1);
         return newState;
     }
     return state;
