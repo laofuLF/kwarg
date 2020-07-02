@@ -19,7 +19,7 @@ const TodolistUI = (props) => {
                 dataSource={props.list}
                 renderItem={(item, index) => (
                     <List.Item
-                        onClick={(index) => {props.handleItemClick(index)}}
+                        onClick={() => {props.handleItemClick(index)}}
                     >
                         <Typography.Text mark/> {item}
                     </List.Item>
