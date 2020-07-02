@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import axios from 'axios'
 import {
     getAddItemAction,
-    getDeleteItemAction,
+    getDeleteItemAction, getInitList,
     getInputChangeAction,
     getTodoList,
     initListAction
@@ -44,7 +44,7 @@ class Todolist extends Component {
     }
 
     componentDidMount() {
-        const action = getTodoList();
+        const action = getInitList();
         store.dispatch(action);
     }
 

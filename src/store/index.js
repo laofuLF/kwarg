@@ -1,8 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga'
+import mySaga from './sagas'
 import reducer from "./reducer";
-import ReduxThunk from 'redux-thunk';
 
-
+// create the saga middleware
+const sagaMiddleware = createSagaMiddleware()
 const composeEnhancers =
     typeof window === 'object' &&
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
@@ -10,12 +12,11 @@ const composeEnhancers =
             // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
         }) : compose;
 
-const enhancer = composeEnhancers(
-    applyMiddleware(ReduxThunk),
-    // other store enhancers if any
-);
+const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
 
 // create store with a reducer
 const store = createStore(reducer, enhancer);
+// then run the saga
+sagaMiddleware.run(mySaga)
 
 export default store;
