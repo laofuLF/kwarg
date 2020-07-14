@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Todolist from "./Todolist";
+import './style';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
-import store from './store/index'
+import App from './App';
 
-const App = (
-    <Provider store={store}>
-        <Todolist />
-    </Provider>
-);
 
 ReactDOM.render(
     <React.StrictMode>
-        {App}
+        <App />
     </React.StrictMode>,
     document.getElementById('root')
 );
