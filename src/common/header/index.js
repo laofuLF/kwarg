@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux';
 import {CSSTransition} from "react-transition-group";
+import {actionCreator} from "./store";
 import {HeaderWrapper,
     Logo,
     Nav,
@@ -7,17 +9,29 @@ import {HeaderWrapper,
     NavSearch,
     Addition,
     Button,
-    SearchWrapper
+    SearchWrapper,
+    SearchInfo,
+    SearchInfoTitle,
+    SearchInfoSwitch,
+    SearchInfoList,
+    SearchInfoItem
 } from "./style";
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            focused: false
-        }
-        this.handleInputFocus = this.handleInputFocus.bind(this);
-        this.handleInputBlur = this.handleInputBlur.bind(this);
+    getListArea = () => {
+        return this.props.focused ? (<SearchInfo>
+            <SearchInfoTitle>
+                try search:
+                <SearchInfoSwitch>
+                    switch
+                </SearchInfoSwitch>
+            </SearchInfoTitle>
+            <SearchInfoList>
+                {this.props.list.map(item => (
+                    <SearchInfoItem key={item}>{item}</SearchInfoItem>
+                ))}
+            </SearchInfoList>
+        </SearchInfo>) : null;
     }
 
     render() {
@@ -35,22 +49,22 @@ class Header extends Component {
                     <SearchWrapper>
                         <CSSTransition
                             timeout={200}
-                            in={this.state.focused}
+                            in={this.props.focused}
                             classNames="slide"
                         >
                             <NavSearch
-                                className={this.state.focused ? 'focused': ''}
-                                onFocus={this.handleInputFocus}
-                                onBlur={this.handleInputBlur}
+                                className={this.props.focused ? 'focused': ''}
+                                onFocus={this.props.handleInputFocus}
+                                onBlur={this.props.handleInputBlur}
                             >
-
                             </NavSearch>
                         </CSSTransition>
                         <i
-                            className={this.state.focused ? 'focused iconfont': 'iconfont'}
+                            className={this.props.focused ? 'focused iconfont': 'iconfont'}
                         >
                             &#xe650;
                         </i>
+                        {this.getListArea()}
                     </SearchWrapper>
 
                     <Addition>
@@ -62,20 +76,27 @@ class Header extends Component {
                     </Addition>
                 </Nav>
             </HeaderWrapper>
-        )
-    }
-
-    handleInputFocus() {
-        this.setState({
-            focused: true
-        })
-    }
-
-    handleInputBlur() {
-        this.setState({
-            focused: false
-        })
+        );
     }
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+    return {
+        focused: state.getIn(['header', 'focused']),
+        list: state.getIn(['header', 'list'])
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleInputFocus() {
+            dispatch(actionCreator.getList())
+            dispatch(actionCreator.searchFocus());
+        },
+        handleInputBlur() {
+            dispatch(actionCreator.searchBlur());
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -48,18 +48,7 @@ export const NavItem = styled.div`
 export const SearchWrapper = styled.div`
     float: left;
     position: relative;
-    .slide-enter {
-        transition: all .2s ease-out;
-    }
-    .slid-enter-active {
-        width: 240px
-    }
-    .slide-exit {
-        transition: all .2s ease-out;
-    }
-    .slide-exit-active {
-        width: 160px
-    }
+   
     .iconfont {
         position: absolute;
         line-height: 30px;
@@ -73,7 +62,7 @@ export const SearchWrapper = styled.div`
             background: #777;
         }
     }
-`
+`;
 
 export const NavSearch = styled.input.attrs({
     placeholder: 'search'
@@ -96,14 +85,65 @@ export const NavSearch = styled.input.attrs({
     &.focused {
         width: 240px;
     }
-`
+    &.slide-enter {
+        transition: all .2s ease-out;
+    }
+    &.slid-enter-active {
+        width: 240px
+    }
+    &.slide-exit {
+        transition: all .2s ease-out;
+    }
+    &.slide-exit-active {
+        width: 160px
+    }
+`;
+
+export const SearchInfo = styled.div`
+    position: absolute;
+    left: 0;
+    top: 65px;
+    width: 240px;
+    padding: 0 20px;
+    box-shadow: 0 0 8px rgba(0,0,0,.2);
+`;
+
+export const SearchInfoTitle = styled.div`
+    margin-top: 20px;
+    margin-bottom: 15px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #969696
+`;
+
+export const SearchInfoSwitch = styled.span`
+    float: right;
+    font-size: 13px;
+`;
+
+export const SearchInfoList = styled.div`
+    overflow: hidden;
+`;
+
+export const SearchInfoItem = styled.a`
+    display: block;
+    float: left;
+    padding: 0 5px;
+    margin-right: 10px;
+    margin-bottom: 15px;
+    line-height: 20px;
+    border: 1px solid #ddd;
+    color: #787878;
+    font-size: 12px;
+    border-radius: 3px;
+`;
 
 export const Addition = styled.div`
     position: absolute;
     right: 0;
     top: 0;
     height: 65px;
-`
+`;
 
 export const Button = styled.div`
     float: right;
@@ -121,5 +161,5 @@ export const Button = styled.div`
          color: #fff;
          background: #ffa69e;
     }
-`
+`;
 
