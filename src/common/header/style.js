@@ -49,7 +49,7 @@ export const SearchWrapper = styled.div`
     float: left;
     position: relative;
    
-    .iconfont {
+    .zoom {
         position: absolute;
         line-height: 30px;
         width: 30px;
@@ -86,7 +86,7 @@ export const NavSearch = styled.input.attrs({
         width: 240px;
     }
     &.slide-enter {
-        transition: all .2s ease-out;
+        transition: all .2s ease-out;&#xe851;
     }
     &.slid-enter-active {
         width: 240px
@@ -119,6 +119,15 @@ export const SearchInfoTitle = styled.div`
 export const SearchInfoSwitch = styled.span`
     float: right;
     font-size: 13px;
+    cursor: pointer;
+    .spin {
+        display: block;
+        float: left;
+        font-size: 10px;
+        margin-right: 2px;
+        transition: all .2s ease-in;
+        transform-origin: center center;
+    }
 `;
 
 export const SearchInfoList = styled.div`

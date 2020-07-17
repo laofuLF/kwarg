@@ -19,22 +19,37 @@ import {HeaderWrapper,
 
 class Header extends Component {
     getListArea = () => {
-        return this.props.focused ? (<SearchInfo>
+        const {focused, list, page, handleMouseEnter, handleMouseLeave, handleChangePage, mouseIn} = this.props;
+        const jsList = list.toJS();
+        const pageList = [];
+
+        if (jsList.length) {
+            for (let i = page * 5; i < (page + 1) * 5 && i < jsList.length; i++) {
+                pageList.push(
+                    <SearchInfoItem key={jsList[i]}>{jsList[i]}</SearchInfoItem>
+                )
+            }
+        }
+
+        return focused || mouseIn ? (<SearchInfo
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <SearchInfoTitle>
                 try search:
-                <SearchInfoSwitch>
+                <SearchInfoSwitch onClick={() => handleChangePage(this.spinIcon)}>
+                    <i ref={(icon) => this.spinIcon = icon} className='iconfont spin'>&#xe851;</i>
                     switch
                 </SearchInfoSwitch>
             </SearchInfoTitle>
             <SearchInfoList>
-                {this.props.list.map(item => (
-                    <SearchInfoItem key={item}>{item}</SearchInfoItem>
-                ))}
+                {pageList}
             </SearchInfoList>
         </SearchInfo>) : null;
     }
 
     render() {
+        const {focused, handleInputFocus, handleInputBlur, list} = this.props;
         return (
             <HeaderWrapper>
                 <Logo />
@@ -49,18 +64,18 @@ class Header extends Component {
                     <SearchWrapper>
                         <CSSTransition
                             timeout={200}
-                            in={this.props.focused}
+                            in={focused}
                             classNames="slide"
                         >
                             <NavSearch
-                                className={this.props.focused ? 'focused': ''}
-                                onFocus={this.props.handleInputFocus}
-                                onBlur={this.props.handleInputBlur}
+                                className={focused ? 'focused': ''}
+                                onFocus={() => handleInputFocus(list)}
+                                onBlur={handleInputBlur}
                             >
                             </NavSearch>
                         </CSSTransition>
                         <i
-                            className={this.props.focused ? 'focused iconfont': 'iconfont'}
+                            className={focused ? 'focused iconfont zoom': 'iconfont zoom'}
                         >
                             &#xe650;
                         </i>
@@ -83,18 +98,36 @@ class Header extends Component {
 const mapStateToProps = (state) => {
     return {
         focused: state.getIn(['header', 'focused']),
-        list: state.getIn(['header', 'list'])
+        list: state.getIn(['header', 'list']),
+        page: state.getIn(['header', 'page']),
+        mouseIn: state.getIn(['header', 'mouseIn'])
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleInputFocus() {
-            dispatch(actionCreator.getList())
+        handleInputFocus(list) {
+            (list.size === 0) && dispatch(actionCreator.getList())
             dispatch(actionCreator.searchFocus());
         },
         handleInputBlur() {
             dispatch(actionCreator.searchBlur());
+        },
+        handleMouseEnter() {
+            dispatch(actionCreator.mouseEnter());
+        },
+        handleMouseLeave() {
+            dispatch(actionCreator.mouseLeave());
+        },
+        handleChangePage(spin) {
+            let originalAngle = spin.style.transform.replace(/[^0-9]/ig, '');
+            if (originalAngle) {
+                originalAngle = parseInt(originalAngle, 10);
+            } else {
+                originalAngle = 0;
+            }
+            spin.style.transform = 'rotate(' + (originalAngle + 360) + 'deg)';
+            dispatch(actionCreator.changePage());
         }
     }
 }

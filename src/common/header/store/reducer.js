@@ -3,19 +3,31 @@ import {fromJS} from 'immutable';
 
 const defaultState = fromJS({
     focused: false,
-    list: []
+    mouseIn: false,
+    list: [],
+    page: 0,
+    totalPage: 1
 });
 
 export default (state = defaultState, action) => {
-    if (action.type === constants.SEARCH_FOCUS) {
-        // use set to create a immutable copy with this new value
-        return state.set('focused', true);
+    switch (action.type) {
+        case constants.SEARCH_FOCUS:
+            return state.set('focused', true);
+        case constants.SEARCH_BLUR:
+            return state.set('focused', false);
+        case constants.CHANGE_LIST:
+            return state.merge({
+                list: action.data,
+                totalPage: action.totalPage
+            })
+        case constants.MOUSE_ENTER:
+            return state.set('mouseIn', true);
+        case constants.MOUSE_LEAVE:
+            return state.set('mouseIn', false);
+        case constants.CHANGE_PAGE:
+            return state.set('page', (state.get("page") + 1) % state.get('totalPage'));
+        default:
+            return state;
     }
-    if (action.type === constants.SEARCH_BLUR) {
-        return state.set('focused', false);
-    }
-    if (action.type === constants.CHANG_LIST) {
-        return state.set('list', action.data);
-    }
-    return state;
+
 }

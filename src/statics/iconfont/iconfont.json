@@ -6,6 +6,13 @@
   "description": "web app built from React",
   "glyphs": [
     {
+      "icon_id": "401103",
+      "name": "spin",
+      "font_class": "spin",
+      "unicode": "e851",
+      "unicode_decimal": 59473
+    },
+    {
       "icon_id": "993786",
       "name": "搜索",
       "font_class": "sousuo",

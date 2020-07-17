@@ -2,18 +2,19 @@ import * as constants from './constants';
 import axios from 'axios';
 import {fromJS} from "immutable";
 
+// make retrieved data immutable
+const changeList = (data) => ({
+    type: constants.CHANGE_LIST,
+    data: fromJS(data),
+    totalPage: Math.ceil(data.length / 5)
+});
+
 export const searchFocus = () => ({
     type: constants.SEARCH_FOCUS
 })
 
 export const searchBlur = () => ({
     type: constants.SEARCH_BLUR
-})
-
-// make retrieved data immutable
-const changeList = (data) => ({
-    type: constants.CHANG_LIST,
-    data: fromJS(data)
 })
 
 export const getList = () => {
@@ -25,4 +26,16 @@ export const getList = () => {
             console.log("error");
         })
     }
-}
+};
+
+export const mouseEnter = () => ({
+    type: constants.MOUSE_ENTER
+})
+
+export const mouseLeave = () => ({
+    type: constants.MOUSE_LEAVE
+})
+
+export const changePage = () =>({
+    type: constants.CHANGE_PAGE
+})
